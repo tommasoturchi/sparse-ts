@@ -24,6 +24,13 @@ export class SparseArray<T> {
     this.hwm = v - 1;
   }
 
+  map<U>(f: (x: T ) => U): SparseArray<U> {
+    const result = new SparseArray<U>(f(this.dflt));
+    for (let i = 0; i < this.length; i++)
+      result.wr(i, f(this.rd(i)));
+    return result;
+  }
+
   rd(i: Index): T {
     if (this.store.has(i)) return this.store.get(i)!;
     else return this.dflt;
